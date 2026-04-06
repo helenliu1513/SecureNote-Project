@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ note.title }} – SecureNote</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; }
+        .meta { color: #666; font-size: 0.85em; margin-bottom: 1.5em; }
+        .content { line-height: 1.6; }
+        a { color: #0066cc; }
+    </style>
+</head>
+<body>
+    <h1>{{ note.title }}</h1>
+    <p class="meta">Created: {{ note.created_at }}</p>
+    <div class="content">
+        {{ note.content | safe }}
+    </div>
+    <p><a href="/notes">← Back to notes</a></p>
+</body>
+</html>
