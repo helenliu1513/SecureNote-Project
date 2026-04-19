@@ -1,18 +1,12 @@
-file,line_number,vulnerability_type,evidence
-./config.py,14,Hardcoded secret,"SECRET_KEY = ""supersecretkey123""                    # used for session signing"
-./config.py,18,Possible path traversal,DATABASE_PATH = os.path.join(
-./config.py,23,Possible path traversal,UPLOAD_FOLDER = os.path.join(
-./config.py,36,Debug mode enabled,DEBUG = True
-./config.py,42,Debug mode enabled,DEBUG = True                                       # convenient for demos
-./models/user.py,24,Weak hashing,return hashlib.md5(password.encode()).hexdigest()
-./routes/admin.py,19,Missing auth decorator on admin route,"@admin_bp.route(""/users"", methods=[""GET""])"
-./routes/admin.py,26,Missing auth decorator on admin route,"@admin_bp.route(""/users/<int:user_id>"", methods=[""GET""])"
-./routes/admin.py,39,Missing auth decorator on admin route,"@admin_bp.route(""/users/<int:user_id>"", methods=[""DELETE""])"
-./routes/admin.py,51,Missing auth decorator on admin route,"@admin_bp.route(""/users/<int:user_id>/role"", methods=[""PUT""])"
-./routes/export.py,64,Possible path traversal,"output_path = os.path.join(tempfile.gettempdir(), f""{output_filename}.pdf"")"
-./routes/export.py,68,Command execution,os.system(cmd)
-./routes/export.py,73,Possible path traversal,"return send_file(output_path, mimetype=""application/pdf"", as_attachment=True)"
-./routes/export.py,92,Unsafe deserialization,notes_data = pickle.loads(raw)
-./utils/files.py,21,Possible path traversal,"filepath = os.path.join(Config.UPLOAD_FOLDER, filename)"
-./utils/files.py,23,Possible path traversal,if not os.path.isfile(filepath):
-./utils/files.py,26,Possible path traversal,"return send_file(filepath, as_attachment=True)"
+file,lines,severity,evidence,confidence,mitigation
+routes/export.py,64.0,Critical,Remote Code Execution,Low,See report
+routes/admin.py,19.0,Critical,"Unauthorized access, privilege escalation",High,See report
+config.py,14.0,High,Session forgery,Med,See report
+models/user.py,24.0,High,Credential compromise,High,See report
+routes/auth.py,N/A,High,Credential exposure via logs,High,See report
+routes/notes.py,N/A,High,"Script injection, session hijacking",Med,See report
+templates/note_detail.html,N/A,High,"Script injection, session hijacking",Med,See report
+templates/note_detail.html,template rendering,High,Stored XSS vulnerability due to unsanitized HTML rendering,High,Escape user input before rendering
+utils/files.py,21.0,Medium,Arbitrary file read,Med,See report
+routes/auth.py,logging,Medium,Plaintext password logging detected,High,Do not log sensitive user credentials
+config.py,14.0,Low,"Data exposure, potential RCE",Low,See report
